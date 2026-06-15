@@ -1,31 +1,40 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { DIRECTUS_URL } from '@/lib/directus'
 
 export async function login(formData: FormData) {
-    const supabase = await createClient()
+  const email = String(formData.get('email') || '')
+  const password = String(formData.get('password') || '')
 
-    // type-casting here for convenience
-    // in practice, you should validate your inputs
-    const data = {
-        email: formData.get('email') as string,
-        password: formData.get('password') as string,
-    }
+  const res = await fetch(`${DIRECTUS_URL}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password, mode: 'json' }),
+  })
 
-    const { error } = await supabase.auth.signInWithPassword(data)
+  if (!res.ok) {
+    redirect('/login?fel=1')
+  }
 
-    if (error) {
-        redirect('/login?message=Kunde inte logga in')
-    }
+  const { data } = await res.json()
+  const c = await cookies()
+  const common = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax' as const,
+    path: '/',
+  }
+  c.set('directus_token', data.access_token, { ...common, maxAge: 60 * 60 * 24 })
+  c.set('directus_refresh', data.refresh_token, { ...common, maxAge: 60 * 60 * 24 * 30 })
 
-    revalidatePath('/', 'layout')
-    redirect('/')
+  redirect('/')
 }
 
 export async function logout() {
-    const supabase = await createClient()
-    await supabase.auth.signOut()
-    redirect('/login')
+  const c = await cookies()
+  c.delete('directus_token')
+  c.delete('directus_refresh')
+  redirect('/login')
 }

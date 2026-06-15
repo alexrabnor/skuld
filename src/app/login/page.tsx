@@ -1,61 +1,53 @@
-import { login } from './actions'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Wallet } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { login } from "./actions"
 
 export default async function LoginPage({
-    searchParams,
+  searchParams,
 }: {
-    searchParams: Promise<{ message: string }>
+  searchParams: Promise<{ fel?: string }>
 }) {
-    const resolvedSearchParams = await searchParams;
-    return (
-        <div className="flex min-h-screen items-center justify-center p-4 bg-gradient-to-br from-zinc-900 to-black text-zinc-100">
-            <div className="absolute inset-0 bg-[url('/noise.png')] opacity-5 pointer-events-none rounded-2xl" />
-            <Card className="w-full max-w-sm bg-zinc-950/50 backdrop-blur-xl border-zinc-800 shadow-2xl">
-                <CardHeader className="space-y-1 text-center">
-                    <CardTitle className="text-3xl font-bold tracking-tight text-white">Skuld</CardTitle>
-                    <CardDescription className="text-zinc-400">
-                        Logga in för att se gemensamma skulder
-                    </CardDescription>
-                </CardHeader>
-                <form action={login}>
-                    <CardContent className="space-y-4">
-                        {resolvedSearchParams?.message && (
-                            <div className="p-3 text-sm text-red-400 bg-red-950/30 border border-red-900/50 rounded-md text-center">
-                                {resolvedSearchParams.message}
-                            </div>
-                        )}
-                        <div className="space-y-2">
-                            <Label htmlFor="email" className="text-zinc-300">E-post</Label>
-                            <Input
-                                id="email"
-                                name="email"
-                                type="email"
-                                placeholder="ange din e-post"
-                                required
-                                className="bg-zinc-900/50 border-zinc-800 text-white placeholder:text-zinc-500 focus-visible:ring-zinc-700"
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="password" className="text-zinc-300">Lösenord</Label>
-                            <Input
-                                id="password"
-                                name="password"
-                                type="password"
-                                required
-                                className="bg-zinc-900/50 border-zinc-800 text-white placeholder:text-zinc-500 focus-visible:ring-zinc-700"
-                            />
-                        </div>
-                    </CardContent>
-                    <CardFooter>
-                        <Button type="submit" className="w-full bg-white text-black hover:bg-zinc-200 transition-colors font-medium">
-                            Logga in
-                        </Button>
-                    </CardFooter>
-                </form>
-            </Card>
+  const { fel } = await searchParams
+  return (
+    <div className="min-h-dvh flex items-center justify-center p-4 bg-gradient-to-b from-background to-muted/40">
+      <div className="w-full max-w-sm">
+        <div className="mb-8 flex flex-col items-center gap-3 text-center">
+          <div className="flex size-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg">
+            <Wallet className="size-7" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Skuld</h1>
+            <p className="text-sm text-muted-foreground">Logga in för att fortsätta</p>
+          </div>
         </div>
-    )
+
+        <form action={login} className="space-y-4 rounded-2xl border bg-card p-6 shadow-sm">
+          {fel && (
+            <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              Fel e-post eller lösenord.
+            </p>
+          )}
+          <div className="space-y-2">
+            <Label htmlFor="email">E-post</Label>
+            <Input id="email" name="email" type="email" autoComplete="username" required />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Lösenord</Label>
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+            />
+          </div>
+          <Button type="submit" className="w-full">
+            Logga in
+          </Button>
+        </form>
+      </div>
+    </div>
+  )
 }
