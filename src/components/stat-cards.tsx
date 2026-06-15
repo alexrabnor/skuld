@@ -22,12 +22,12 @@ function Tile({
   sub?: string
 }) {
   return (
-    <div className="rounded-2xl border bg-card p-4 shadow-sm">
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-        <Icon className="size-4" />
+    <div className="rounded-sm border bg-card p-4 shadow-sm">
+      <div className="kicker flex items-center gap-2 text-muted-foreground">
+        <Icon className="size-3.5" />
         {label}
       </div>
-      <div className="mt-2 text-xl font-semibold tabular-nums">{value}</div>
+      <div className="font-display mt-2 text-2xl tabular-nums">{value}</div>
       {sub && <div className="mt-0.5 text-xs text-muted-foreground">{sub}</div>}
     </div>
   )

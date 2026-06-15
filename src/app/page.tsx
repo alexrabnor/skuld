@@ -29,12 +29,12 @@ export default async function DashboardPage() {
 
         <MonthSummary lent={month.lent} repaid={month.repaid} net={month.net} />
 
-        <section className="rounded-2xl border bg-card p-4 shadow-sm">
-          <div className="mb-1 flex items-center justify-between">
-            <h2 className="text-sm font-semibold">Senaste transaktioner</h2>
+        <section className="rounded-sm border bg-card p-5 shadow-sm">
+          <div className="mb-3 flex items-center justify-between border-b pb-3">
+            <h2 className="kicker text-muted-foreground">Senaste transaktioner</h2>
             <Link
               href="/transaktioner"
-              className="flex items-center text-xs text-muted-foreground hover:text-foreground"
+              className="flex items-center text-xs text-muted-foreground hover:text-brand"
             >
               Visa alla <ChevronRight className="size-3.5" />
             </Link>

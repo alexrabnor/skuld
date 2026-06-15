@@ -35,16 +35,16 @@ export function AppShell({
   const pathname = usePathname()
 
   return (
-    <div className="min-h-dvh bg-gradient-to-b from-background to-muted/30">
+    <div className="min-h-dvh bg-background">
       <header className="sticky top-0 z-30 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
-          <div className="flex items-center gap-2.5">
-            <div className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-              <Wallet className="size-5" />
+        <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3.5">
+          <div className="flex items-center gap-3">
+            <div className="flex size-9 items-center justify-center rounded-sm bg-brand text-brand-foreground">
+              <Wallet className="size-[18px]" />
             </div>
-            <div className="leading-tight">
-              <p className="text-sm font-semibold">Skuld</p>
-              <p className="text-xs text-muted-foreground">{partnerName}</p>
+            <div className="leading-none">
+              <p className="font-display text-2xl leading-none">Skuld</p>
+              <p className="kicker mt-1 text-muted-foreground">{partnerName}</p>
             </div>
           </div>
           <div className="flex items-center gap-1">
@@ -58,6 +58,7 @@ export function AppShell({
                     asChild
                     variant={active ? "secondary" : "ghost"}
                     size="sm"
+                    className="kicker rounded-sm"
                   >
                     <Link href={item.href}>
                       <item.icon /> {item.label}
@@ -90,8 +91,8 @@ export function AppShell({
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] transition-colors",
-                  active ? "text-primary" : "text-muted-foreground"
+                  "flex flex-1 flex-col items-center gap-1 py-2.5 text-[10px] uppercase tracking-[0.12em] transition-colors",
+                  active ? "text-brand" : "text-muted-foreground"
                 )}
               >
                 <item.icon className="size-5" />

@@ -13,10 +13,10 @@ export function BalanceCard({
   const theyOwe = balance > 0
 
   const tone = settled
-    ? "from-emerald-500/15 to-emerald-500/5 border-emerald-500/30"
+    ? "from-emerald-700/10 to-transparent border-emerald-700/25"
     : theyOwe
-      ? "from-red-500/15 to-red-500/5 border-red-500/30"
-      : "from-blue-500/15 to-blue-500/5 border-blue-500/30"
+      ? "from-brand/15 to-transparent border-brand/30"
+      : "from-stone-500/10 to-transparent border-border"
 
   const label = settled
     ? "Allt är reglerat"
@@ -25,28 +25,33 @@ export function BalanceCard({
       : `Jag är skyldig ${partnerName}`
 
   const accent = settled
-    ? "text-emerald-600 dark:text-emerald-400"
+    ? "text-emerald-700 dark:text-emerald-400"
     : theyOwe
-      ? "text-red-600 dark:text-red-400"
-      : "text-blue-600 dark:text-blue-400"
+      ? "text-brand"
+      : "text-foreground"
 
   const Icon = settled ? CheckCircle2 : theyOwe ? ArrowUpRight : ArrowDownRight
 
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-3xl border bg-gradient-to-br p-6 shadow-sm sm:p-8",
+        "relative overflow-hidden rounded-sm border bg-gradient-to-br p-6 shadow-sm sm:p-9",
         tone
       )}
     >
-      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-        <Icon className={cn("size-4", accent)} />
+      <div className="kicker flex items-center gap-2 text-muted-foreground">
+        <Icon className={cn("size-3.5", accent)} />
         {label}
       </div>
-      <div className={cn("mt-3 text-5xl font-bold tracking-tight tabular-nums sm:text-6xl", accent)}>
+      <div
+        className={cn(
+          "font-display mt-4 text-6xl tabular-nums sm:text-7xl",
+          accent
+        )}
+      >
         {settled ? kr(0) : kr(Math.abs(balance))}
       </div>
-      <p className="mt-2 text-sm text-muted-foreground">
+      <p className="mt-3 text-sm text-muted-foreground">
         {settled
           ? "Inga utestående skulder just nu."
           : "Aktuellt utestående saldo."}
