@@ -1,5 +1,3 @@
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
 import type { Book, Debt, Payment } from './types'
 
 export const DIRECTUS_URL =
@@ -9,9 +7,12 @@ export const DIRECTUS_URL =
 export const DIRECTUS_PUBLIC_URL =
   process.env.DIRECTUS_PUBLIC_URL || 'https://databasen.alexcloud.se'
 
+/**
+ * Statisk token för app-kontot. Appen har ingen inloggning – alla anrop mot
+ * Directus görs serverside med denna token (sätts i .env, läcker aldrig till klienten).
+ */
 export async function getToken(): Promise<string | null> {
-  const c = await cookies()
-  return c.get('directus_token')?.value || null
+  return process.env.DIRECTUS_TOKEN || null
 }
 
 export async function directusFetch(
@@ -31,24 +32,14 @@ export async function directusFetch(
   })
 }
 
-export interface SessionUser {
-  id: string
-  email: string
-  first_name: string | null
-  last_name: string | null
-}
-
-export async function requireAuth(): Promise<{ user: SessionUser; token: string }> {
+/**
+ * Returnerar app-kontots statiska token. Ingen inloggning krävs – token finns i
+ * miljövariabeln DIRECTUS_TOKEN. Saknas den är det ett konfigurationsfel.
+ */
+export async function requireAuth(): Promise<{ token: string }> {
   const token = await getToken()
-  if (!token) redirect('/login')
-  const res = await directusFetch(
-    '/users/me?fields=id,email,first_name,last_name',
-    undefined,
-    token,
-  )
-  if (!res.ok) redirect('/login')
-  const { data } = await res.json()
-  return { user: data, token }
+  if (!token) throw new Error('DIRECTUS_TOKEN saknas i miljön')
+  return { token }
 }
 
 /** Hämtar (eller upptäcker att det saknas) den inloggade användarens första bok. */

@@ -9,14 +9,12 @@ import {
   BarChart3,
   Activity,
   Wallet,
-  LogOut,
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { QuickActions } from "@/components/quick-actions"
-import { logout } from "@/app/login/actions"
 
 const NAV = [
   { href: "/", label: "Översikt", icon: LayoutDashboard },
@@ -68,11 +66,6 @@ export function AppShell({
               })}
             </nav>
             <ThemeToggle />
-            <form action={logout}>
-              <Button variant="ghost" size="icon" aria-label="Logga ut" type="submit">
-                <LogOut />
-              </Button>
-            </form>
           </div>
         </div>
       </header>
