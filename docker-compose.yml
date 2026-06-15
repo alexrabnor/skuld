@@ -8,11 +8,17 @@ services:
     environment:
       - PORT=${PORT}
       - HOSTNAME=0.0.0.0
+      - PLAN_DATA_DIR=/app/data
     ports:
       - "${PORT}:${PORT}"
+    volumes:
+      - skuld_data:/app/data
     networks:
       - caddy_net
 
 networks:
   caddy_net:
     external: true
+
+volumes:
+  skuld_data:

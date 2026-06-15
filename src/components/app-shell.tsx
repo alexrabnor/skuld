@@ -8,6 +8,7 @@ import {
   ListOrdered,
   BarChart3,
   Activity,
+  FileSignature,
   Wallet,
 } from "lucide-react"
 
@@ -17,10 +18,11 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { QuickActions } from "@/components/quick-actions"
 
 const NAV = [
-  { href: "/", label: "Översikt", icon: LayoutDashboard },
-  { href: "/transaktioner", label: "Transaktioner", icon: ListOrdered },
-  { href: "/statistik", label: "Statistik", icon: BarChart3 },
-  { href: "/tidslinje", label: "Tidslinje", icon: Activity },
+  { href: "/", label: "Översikt", short: "Översikt", icon: LayoutDashboard },
+  { href: "/transaktioner", label: "Transaktioner", short: "Transakt.", icon: ListOrdered },
+  { href: "/plan", label: "Plan", short: "Plan", icon: FileSignature },
+  { href: "/statistik", label: "Statistik", short: "Statistik", icon: BarChart3 },
+  { href: "/tidslinje", label: "Tidslinje", short: "Tidslinje", icon: Activity },
 ]
 
 export function AppShell({
@@ -84,12 +86,12 @@ export function AppShell({
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex flex-1 flex-col items-center gap-1 py-2.5 text-[10px] uppercase tracking-[0.12em] transition-colors",
+                  "flex flex-1 flex-col items-center gap-1 py-2.5 text-[10px] uppercase tracking-[0.08em] transition-colors",
                   active ? "text-brand" : "text-muted-foreground"
                 )}
               >
                 <item.icon className="size-5" />
-                {item.label}
+                {item.short}
               </Link>
             )
           })}

@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# lokal plandata (lagras i Docker-volym i produktion)
+/data
+
 # debug
 npm-debug.log*
 yarn-debug.log*
