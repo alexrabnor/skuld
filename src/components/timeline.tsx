@@ -1,16 +1,9 @@
 import { ArrowDownLeft, Flag } from "lucide-react"
 
 import { CategoryIcon } from "@/components/category-icon"
-import { Badge } from "@/components/ui/badge"
-import { kr, longDate, STATUS_LABEL } from "@/lib/format"
+import { kr, longDate } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import type { LedgerEvent } from "@/lib/types"
-
-const STATUS_VARIANT = {
-  unpaid: "danger",
-  partial: "warning",
-  paid: "success",
-} as const
 
 export function Timeline({
   events,
@@ -57,11 +50,6 @@ export function Timeline({
                 <p className="text-xs text-muted-foreground">
                   {longDate(e.date)} · {isDebt ? e.category : e.method}
                 </p>
-                {isDebt && (
-                  <Badge variant={STATUS_VARIANT[e.status]} className="mt-1">
-                    {STATUS_LABEL[e.status]}
-                  </Badge>
-                )}
               </div>
               <span
                 className={cn(

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
 import { requireAuth, loadBookData } from "@/lib/directus"
 import { allocate, buildLedger } from "@/lib/fifo"
-import { STATUS_LABEL } from "@/lib/format"
 
 function csvCell(v: string | number): string {
   const s = String(v ?? "")
@@ -26,7 +25,6 @@ export async function GET() {
     "Återbetalat",
     "Kvar",
     "Betalsätt",
-    "Status",
     "Kommentar",
   ]
 
@@ -42,7 +40,6 @@ export async function GET() {
         e.repaid,
         e.remaining,
         e.payment_method,
-        STATUS_LABEL[e.status],
         e.note ?? "",
       ]
     }
@@ -56,7 +53,6 @@ export async function GET() {
       "",
       "",
       e.method,
-      "",
       e.comment ?? "",
     ]
   })

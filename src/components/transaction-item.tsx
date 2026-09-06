@@ -13,18 +13,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { CategoryIcon } from "@/components/category-icon"
 import { cn } from "@/lib/utils"
-import { kr, longDate, STATUS_LABEL } from "@/lib/format"
+import { kr, longDate } from "@/lib/format"
 import type { LedgerEvent } from "@/lib/types"
 import { deleteDebt, deletePayment, settleAmount } from "@/app/actions"
-
-const STATUS_VARIANT = {
-  unpaid: "danger",
-  partial: "warning",
-  paid: "success",
-} as const
 
 export function TransactionItem({
   event,
@@ -78,11 +71,6 @@ export function TransactionItem({
             <p className="truncate text-sm font-medium">
               {isDebt ? event.description || event.category : "Återbetalning"}
             </p>
-            {isDebt && (
-              <Badge variant={STATUS_VARIANT[event.status]} className="hidden sm:inline-flex">
-                {STATUS_LABEL[event.status]}
-              </Badge>
-            )}
           </div>
           <p className="truncate text-xs text-muted-foreground">
             {longDate(event.date)} · {isDebt ? event.category : event.method}
@@ -119,14 +107,6 @@ export function TransactionItem({
                 <Field label="Betalsätt" value={event.payment_method} />
                 <Field label="Återbetalat" value={kr(event.repaid)} />
                 <Field label="Kvar" value={kr(event.remaining)} />
-                <div className="col-span-2">
-                  <dt className="text-xs text-muted-foreground">Status</dt>
-                  <dd className="mt-1">
-                    <Badge variant={STATUS_VARIANT[event.status]}>
-                      {STATUS_LABEL[event.status]}
-                    </Badge>
-                  </dd>
-                </div>
                 {event.note && <Field label="Anteckning" value={event.note} full />}
                 {receiptUrl && (
                   <div className="col-span-2">

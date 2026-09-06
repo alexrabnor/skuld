@@ -16,13 +16,6 @@ export interface ViewItem {
   receiptUrl?: string
 }
 
-const STATUS_OPTIONS = [
-  { value: "all", label: "Alla statusar" },
-  { value: "unpaid", label: "Ej återbetald" },
-  { value: "partial", label: "Delvis återbetald" },
-  { value: "paid", label: "Helt återbetald" },
-]
-
 export function TransactionsView({
   items,
   partnerName,
@@ -33,7 +26,6 @@ export function TransactionsView({
   const [q, setQ] = React.useState("")
   const [period, setPeriod] = React.useState("all")
   const [category, setCategory] = React.useState("all")
-  const [status, setStatus] = React.useState("all")
 
   const months = React.useMemo(() => {
     const keys = new Set(items.map((i) => monthKey(i.event.date)))
@@ -45,7 +37,6 @@ export function TransactionsView({
 
     const isDebt = event.kind === "debt"
     if (category !== "all" && (!isDebt || event.category !== category)) return false
-    if (status !== "all" && (!isDebt || event.status !== status)) return false
 
     if (q.trim()) {
       const hay = (
@@ -58,7 +49,7 @@ export function TransactionsView({
     return true
   })
 
-  const active = q || period !== "all" || category !== "all" || status !== "all"
+  const active = q || period !== "all" || category !== "all"
 
   return (
     <div className="space-y-4">
@@ -72,7 +63,7 @@ export function TransactionsView({
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-2">
         <Select value={period} onChange={(e) => setPeriod(e.target.value)}>
           <option value="all">Alla perioder</option>
           {months.map((m) => (
@@ -89,13 +80,6 @@ export function TransactionsView({
             </option>
           ))}
         </Select>
-        <Select value={status} onChange={(e) => setStatus(e.target.value)}>
-          {STATUS_OPTIONS.map((s) => (
-            <option key={s.value} value={s.value}>
-              {s.label}
-            </option>
-          ))}
-        </Select>
       </div>
 
       <div className="flex items-center justify-between px-1 text-xs text-muted-foreground">
@@ -108,7 +92,6 @@ export function TransactionsView({
               setQ("")
               setPeriod("all")
               setCategory("all")
-              setStatus("all")
             }}
           >
             <X /> Rensa filter

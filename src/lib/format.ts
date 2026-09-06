@@ -36,9 +36,3 @@ export function monthLabel(iso: string): string {
 export function monthKey(iso: string): string {
   return iso.slice(0, 7)
 }
-
-export const STATUS_LABEL = {
-  unpaid: 'Ej återbetald',
-  partial: 'Delvis återbetald',
-  paid: 'Helt återbetald',
-} as const

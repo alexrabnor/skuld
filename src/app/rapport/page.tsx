@@ -1,7 +1,7 @@
 import { requireAuth, loadBookData } from "@/lib/directus"
 import { allocate, balanceOf, buildLedger } from "@/lib/fifo"
 import { computeStats } from "@/lib/stats"
-import { kr, longDate, STATUS_LABEL } from "@/lib/format"
+import { kr, longDate } from "@/lib/format"
 import { NoBook } from "@/components/no-book"
 import { PrintButton } from "@/components/print-button"
 
@@ -81,7 +81,6 @@ export default async function ReportPage() {
               <th className="py-1.5 pr-2">Kategori</th>
               <th className="py-1.5 pr-2">Beskrivning</th>
               <th className="py-1.5 pr-2 text-right">Belopp</th>
-              <th className="py-1.5 pr-2">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -98,9 +97,6 @@ export default async function ReportPage() {
                 <td className="py-1.5 pr-2 text-right tabular-nums">
                   {e.kind === "debt" ? "+" : "−"}
                   {kr(e.amount)}
-                </td>
-                <td className="py-1.5 pr-2">
-                  {e.kind === "debt" ? STATUS_LABEL[e.status] : "–"}
                 </td>
               </tr>
             ))}
