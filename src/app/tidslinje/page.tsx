@@ -12,7 +12,7 @@ export default async function TimelinePage() {
   if (!book) return <NoBook />
 
   const allocated = allocate(debts, payments)
-  const balance = balanceOf(allocated)
+  const balance = balanceOf(debts, payments)
   const ledger = buildLedger(allocated, payments)
 
   return (

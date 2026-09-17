@@ -1,7 +1,7 @@
 import { CheckCircle2, FileSignature, PenLine } from "lucide-react"
 
 import { requireAuth, loadBookData } from "@/lib/directus"
-import { allocate, balanceOf } from "@/lib/fifo"
+import { balanceOf } from "@/lib/fifo"
 import { getPlan } from "@/lib/plan-store"
 import { planTotal } from "@/lib/plan-types"
 import { kr, longDate } from "@/lib/format"
@@ -18,7 +18,7 @@ export default async function PlanPage() {
   const { book, debts, payments } = await loadBookData(token)
   if (!book) return <NoBook />
 
-  const balance = balanceOf(allocate(debts, payments))
+  const balance = balanceOf(debts, payments)
   const outstanding = Math.abs(balance)
   const theyOwe = balance >= 0
   const partner = book.partner_name

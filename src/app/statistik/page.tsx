@@ -19,7 +19,7 @@ export default async function StatsPage() {
   if (!book) return <NoBook />
 
   const allocated = allocate(debts, payments)
-  const balance = balanceOf(allocated)
+  const balance = balanceOf(debts, payments)
   const stats = computeStats(allocated, payments, balance)
 
   return (

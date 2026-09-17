@@ -1,4 +1,11 @@
-import type { Debt, Payment, DebtWithStatus, SettleStatus, LedgerEvent } from './types'
+import type {
+  Debt,
+  Payment,
+  DebtWithStatus,
+  SettleStatus,
+  LedgerEvent,
+  Direction,
+} from './types'
 
 function statusOf(amount: number, repaid: number): SettleStatus {
   if (repaid <= 0.001) return 'unpaid'
@@ -49,12 +56,26 @@ export function allocate(debts: Debt[], payments: Payment[]): DebtWithStatus[] {
   })
 }
 
-/** Nettosaldo: positivt = motparten är skyldig dig, negativt = du är skyldig. */
-export function balanceOf(debts: DebtWithStatus[]): number {
-  return debts.reduce(
-    (acc, d) => acc + (d.direction === 'they_owe' ? d.remaining : -d.remaining),
-    0,
-  )
+/**
+ * Nettosaldo: positivt = motparten är skyldig dig, negativt = du är skyldig.
+ *
+ * Räknas på råa summor, inte på `remaining`, eftersom `remaining` är nollklampad
+ * per post: en återbetalning som är större än de öppna skulderna i sin riktning
+ * lämnar ett överskott som inte hör till någon enskild skuld, men som ska vända
+ * saldot åt andra hållet.
+ */
+export function balanceOf(debts: Debt[], payments: Payment[]): number {
+  const sum = (
+    rows: { direction: Direction; amount: number }[],
+    dir: Direction,
+  ) =>
+    rows
+      .filter((r) => r.direction === dir)
+      .reduce((acc, r) => acc + Number(r.amount), 0)
+
+  const theyOwe = sum(debts, 'they_owe') - sum(payments, 'they_owe')
+  const iOwe = sum(debts, 'i_owe') - sum(payments, 'i_owe')
+  return theyOwe - iOwe
 }
 
 /** Sammanslagen, datumsorterad lista av skulder + återbetalningar (nyast först). */
