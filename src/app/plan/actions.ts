@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { getBook, loadBookData, requireAuth } from '@/lib/directus'
-import { allocate, balanceOf } from '@/lib/fifo'
+import { balanceOf } from '@/lib/fifo'
 import { getPlan, removePlan, savePlan as persist } from '@/lib/plan-store'
 import type { Installment, RepaymentPlan } from '@/lib/plan-types'
 
@@ -17,7 +17,7 @@ async function bookId(): Promise<string> {
 async function outstanding(): Promise<number> {
   const { token } = await requireAuth()
   const { debts, payments } = await loadBookData(token)
-  return Math.abs(balanceOf(allocate(debts, payments)))
+  return Math.abs(balanceOf(debts, payments))
 }
 
 function parseInstallments(raw: string): Installment[] {

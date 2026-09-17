@@ -18,7 +18,7 @@ export default async function DashboardPage() {
   if (!book) return <NoBook />
 
   const allocated = allocate(debts, payments)
-  const balance = balanceOf(allocated)
+  const balance = balanceOf(debts, payments)
   const ledger = buildLedger(allocated, payments)
   const month = thisMonthSummary(allocated, payments)
 

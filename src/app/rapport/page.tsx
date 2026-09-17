@@ -13,7 +13,7 @@ export default async function ReportPage() {
   if (!book) return <NoBook />
 
   const allocated = allocate(debts, payments)
-  const balance = balanceOf(allocated)
+  const balance = balanceOf(debts, payments)
   const ledger = buildLedger(allocated, payments)
   const stats = computeStats(allocated, payments, balance)
   const today = longDate(new Date().toISOString().slice(0, 10))
